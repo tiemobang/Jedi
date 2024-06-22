@@ -285,7 +285,7 @@ class TraceGenerator():
             fp.write('\n'.join(sys.argv[1:]))
             
         ## Assign timestamp based on the specified request rate
-        self.assign_timestamps_reqrate(c_trace, sizes, self.args.req_rate, f)
+        self.assign_timestamps_reqrate(c_trace, sizes, self.args.req_rate, f, self.args.separator)
         
         ## We are done!
         if self.printBox != None:
@@ -295,24 +295,24 @@ class TraceGenerator():
                 
             
     ## Assign timestamp based on the byte-rate of the FD
-    def assign_timestamps(self, c_trace, sizes, byte_rate, f):
+    def assign_timestamps(self, c_trace, sizes, byte_rate, f, sep=","):
         timestamp = 0
         KB_added = 0
         KB_rate = byte_rate/1000
 
         for c in c_trace:
             KB_added += sizes[c]
-            f.write(str(timestamp) + "," + str(c) + "," + str(sizes[c]) + "\n")
+            f.write(str(timestamp) + sep + str(c) + sep + str(sizes[c]) + "\n")
 
             if KB_added >= KB_rate:
                 timestamp += 1
                 KB_added = 0
 
-    def assign_timestamps_reqrate(self, c_trace, sizes, req_rate, f):
+    def assign_timestamps_reqrate(self, c_trace, sizes, req_rate, f, sep=","):
         timestamp = 1
         i = 1
         for c in c_trace:
-            f.write(str(timestamp) + "," + str(c) + "," + str(sizes[c]) + "\n")
+            f.write(str(timestamp) + sep + str(c) + sep + str(sizes[c]) + "\n")
 
             if (i)%(int(req_rate)) == 0:
                 timestamp += 1

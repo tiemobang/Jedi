@@ -49,6 +49,7 @@ class Arguments():
         self.traffic_ratio   = ""
         self.req_rate        = 1000
         self.length          = 100000000
+        self.separator       = ","
 
         
 
@@ -82,6 +83,9 @@ def read_config_file(config_file):
         print("Input Input_unit as either 'reqs/s' or 'gbps'")
         sys.exit()
     input_unit = config["Input_unit"]
+
+    ## Separator
+    args.separator = config.get("Separator", ",")
         
     ## Read traffic classes and their traffic volume
     traffic_classes = []
