@@ -32,8 +32,6 @@ def show_available_fds():
 def create_empty_dirs():
     if not os.path.exists("./OUTPUT/"):            
         os.mkdir("./OUTPUT/")
-    if not os.path.exists("./tmp/"):            
-        os.mkdir("./tmp/")
 
             
 

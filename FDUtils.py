@@ -18,11 +18,16 @@ from itertools import repeat
 import sys
 import copy
 import os
+from tempfile import TemporaryDirectory
 
 class MyManager(BaseManager):
     pass
 
 MyManager.register('defaultdict', defaultdict, DictProxy)
+
+# Create random temporary directory to work in
+temp_dir_obj = TemporaryDirectory()
+temp_dir = temp_dir_obj.name
 
 def convolve(obj):
     
@@ -122,7 +127,7 @@ def convolve(obj):
             
 
     print("Computed FD for : ", p)
-    f3 = open("./tmp/" + str(p) + ".txt", "w")
+    f3 = open(os.path.join(temp_dir, [str(p) + ".txt"]), "w")
     for p in st12:
         t_keys = list(st12[p].keys())
         t_keys.sort()
@@ -240,9 +245,8 @@ def convolve_3d_fft(st1, st2, st12, rate1, rate2, sd_gran):
     pool.close()
     pool.join()
     
-    path="./tmp/"
-    for file in os.listdir(path):
-        f = open(path + "/" + file, "r")
+    for file in os.listdir(temp_dir):
+        f = open(temp_dir + "/" + file, "r")
         for l in f:
             l = l.strip().split()
             p = l[0] + ":" + l[1]
@@ -251,5 +255,5 @@ def convolve_3d_fft(st1, st2, st12, rate1, rate2, sd_gran):
             pr = float(l[4])
             if pr > 1e-10:
                 st12[p][iat][sd] = pr
-        os.remove(path + "/" + file)
+        os.remove(temp_dir + "/" + file)
             
